@@ -37,44 +37,31 @@ def manage_course_enrollment():
             print("Random = 2")
             method = input("Choose an option: ")
 
+            enroll_course = None
+            randomly_selected_str = ""
             if method == "1":
                 enroll_course = input("Which course do u want to enroll in: ").upper()
+            elif method == "2":
+                enroll_course = random.choice(courses_only)
+                randomly_selected_str = "randomly selected "
+            else:
+                print("Please enter a valid number to select any of supported options")
 
-                for course in courses_dict:
+            for course in courses_dict:
 
-                    if course["course_code"] == enroll_course:
-
-                        if course["course_code"] not in enroll_courses_list:
-                            enroll_courses_list.append(course["course_code"])
-                            course["enrolled"] = True
-                            print(f"You have successfully been enrolled in {course['course_name']}, which has a total of {course['credits']} credits.")
-
-                        else:
-                            print(f"You have already enrolled in {enroll_course}.")
-
-                        break
+                if course["course_code"] == enroll_course:
+                    if enroll_course not in enroll_courses_list:
+                        enroll_courses_list.append(enroll_course)
+                        course["enrolled"] = True
+                        print(f"You have successfully been enrolled in {randomly_selected_str}{enroll_course} course, which has a total of {course['credits']} credits.")
 
                     else:
-                        course["enrolled"] = False
+                        print(f"You have already enrolled in {enroll_course}.")
 
-            elif method == "2":
-                enroll_courses = random.choice(courses_only)
-                course = None
+                else:
+                    course["enrolled"] = False
 
-                for index in courses_dict:
 
-                    if index["course_code"] == enroll_courses:
-                        course = index
-                        print(f"The course chosen is {course['course_name']}, which has a total of {course['credits']} credits.")
-
-                        if enroll_courses not in enroll_courses_list:
-                            enroll_courses_list.append(enroll_courses)
-
-                        else:
-                            print(f"You have already enrolled in {enroll_courses}.")
-
-            else:
-                print("Please enter a valid number")
 
             do_again = input("Do you want to enroll into more courses? (y/n): ")
 
@@ -102,35 +89,20 @@ def manage_course_unrollment():
         while do_again.lower() == "y":
             if method == "1":
                 unroll_course = input("Which course do u want to unroll from: ").upper()
+            elif method == "2":
+                random.choice(courses_only)
 
+            for course in courses_dict:
+
+                if course["course_code"] == unroll_course:
+                    course["enrolled"] = False
+                    print(f"You have successfully been unrolled from {course['course_name']}.")
                 if unroll_course in enroll_courses_list:
                     enroll_courses_list.remove(unroll_course)
-
-                    for course in courses_dict:
-
-                        if course["course_code"] == unroll_course:
-                            course["enrolled"] = False
-                            print(f"You have successfully been unrolled from {course['course_name']}.")
-                            break
 
                 else:
                     print(f"You are not enrolled in {unroll_course}.")
 
-            if method == "2":
-                enroll_courses = random.choice(courses_only)
-                course = None
-
-                for index in courses_dict:
-
-                    if index["course_code"] == enroll_courses:
-                        course = index
-                        print(f"You have successfully been unrolled from {course['course_name']}")
-
-                        if enroll_courses not in student_name_to_course_list_dict[student_names]:
-                            student_name_to_course_list_dict[student_names].remove(enroll_courses)
-
-                        else:
-                            print(f"You were not in that course")
 
             do_again = input("Do you want to unroll from more courses? (y/n): ")
             student_name_to_course_list_dict[student_names] = enroll_courses_list
@@ -196,4 +168,3 @@ while not is_valid_name(student_name):
 
 for student in student_name_to_course_list_dict:
     print(f"{student}, is enrolled in:, {student_name_to_course_list_dict[student]}")
-
