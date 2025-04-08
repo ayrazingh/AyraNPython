@@ -25,7 +25,6 @@ student_name_to_course_list_dict = {}
 
 
 def manage_course_enrollment():
-
     student_name = input("What is your name: ")
     if is_valid_name(student_name):
         print(f"Hi {student_name}")
@@ -45,7 +44,7 @@ def manage_course_enrollment():
                 enroll_course = random.choice(courses_only)
                 randomly_selected_str = "randomly selected "
             else:
-                print("Please enter a valid number to select any of supported options")
+                print("Please enter a valid number")
 
             for course in courses_dict:
 
@@ -90,18 +89,18 @@ def manage_course_unrollment():
             if method == "1":
                 unroll_course = input("Which course do u want to unroll from: ").upper()
             elif method == "2":
-                random.choice(courses_only)
-
+                unroll_course = random.choice(courses_only)
+            else:
+                print("Please enter a valid number")
             for course in courses_dict:
-
                 if course["course_code"] == unroll_course:
                     course["enrolled"] = False
                     print(f"You have successfully been unrolled from {course['course_name']}.")
-                if unroll_course in enroll_courses_list:
-                    enroll_courses_list.remove(unroll_course)
+            if unroll_course in enroll_courses_list:
+                enroll_courses_list.remove(unroll_course)
 
-                else:
-                    print(f"You are not enrolled in {unroll_course}.")
+            else:
+                print(f"You are not enrolled in {unroll_course}.")
 
 
             do_again = input("Do you want to unroll from more courses? (y/n): ")
@@ -112,11 +111,6 @@ def manage_course_unrollment():
 
             else:
                 print(f"{student_names}, you are not enrolled in any courses.")
-
-
-
-        else:
-            print("Please enter a valid number")
 
     else:
         print("Please enter a valid name (letters and spaces only).")
